@@ -1,0 +1,14 @@
+Abrir el proyecto en el Xampp/htdocs
+CREDENCIALES PARA EL LOGIN:
+
+usuario(ADMIN):carlos555
+contraseña:123456
+
+usuario(DOCENTE):andree555
+contraseña:123456
+
+Cuando se registra un usuario tiene par elegir entre admin y docente, cada uno con
+vistas diferentes.
+
+El periodo es para asignar cuanto dura el curso, si son varios es 2025-1 y
+de que mes a mes dura
