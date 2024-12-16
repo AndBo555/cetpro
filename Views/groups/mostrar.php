@@ -191,18 +191,18 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
               $offset = ($pagina - 1) * $productosPorPagina;
 
               $sentencia = $connect->query("SELECT detalle_notas.id, students.nomstu, 
-        notas.nota1, notas.nota2, notas.nota3, notas.nota4, notas.nota5,
-        count(*) AS conteo FROM detalle_notas 
-        INNER JOIN students ON students.idstu = detalle_notas.students_idstu
-        INNER JOIN notas ON notas.id = detalle_notas.notas_id;");
+              notas.nota1, notas.nota2, notas.nota3, notas.nota4, notas.nota5,
+              count(*) AS conteo FROM detalle_notas 
+              INNER JOIN students ON students.idstu = detalle_notas.students_idstu
+              INNER JOIN notas ON notas.id = detalle_notas.notas_id;");
 
               $conteo = $sentencia->fetchObject()->conteo;
               $paginas = ceil($conteo / $productosPorPagina);
               $sentencia = $connect->prepare("SELECT detalle_notas.id, students.nomstu, 
-        notas.nota1, notas.nota2, notas.nota3, notas.nota4, notas.nota5
-        FROM detalle_notas 
-        INNER JOIN students ON students.idstu = detalle_notas.students_idstu
-        INNER JOIN notas ON notas.id = detalle_notas.notas_id LIMIT ? OFFSET ?");
+              notas.nota1, notas.nota2, notas.nota3, notas.nota4, notas.nota5
+              FROM detalle_notas 
+              INNER JOIN students ON students.idstu = detalle_notas.students_idstu
+              INNER JOIN notas ON notas.id = detalle_notas.notas_id LIMIT ? OFFSET ?");
 
               $sentencia->execute([$limit, $offset]);
               $productos = $sentencia->fetchAll(PDO::FETCH_OBJ);
@@ -235,14 +235,14 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
                       <td>
 
                         <form method='POST' action='<?php $_SERVER['PHP_SELF'] ?>'>
-                          <input type='hidden' name='idsec' value="<?php echo  $persona->id; ?>">
+                          <input type='hidden' name='id' value="<?php echo  $persona->id; ?>">
                           <button name='editar' class='btn btn-warning text-white'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></button>
                         </form>
 
                       </td>
                       <td>
                         <form onsubmit="return confirm('Realmente desea eliminar el registro?');" method='POST' action='<?php $_SERVER['PHP_SELF'] ?>'>
-                          <input type='hidden' name='idsec' value="<?php echo  $persona->id; ?>">
+                          <input type='hidden' name='id' value="<?php echo  $persona->id; ?>">
                           <button name='eliminar' class='btn btn-danger text-white'><i class='material-icons' title='Delete'>&#xE872;</i></button>
                         </form>
                       </td>
@@ -293,81 +293,63 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
             </div>
           </div>
 
-          <?php
 
-          if (isset($_POST['editar'])) {
-            $idsec = $_POST['idsec'];
-            $sql = "SELECT notas.id, notas.nota1, notas.nota2, notas.nota3, notas.nota4, teachers.nota5 FROM  notas INNER JOIN subgrade ON seccion.idsub =subgrade.idsub INNER JOIN teachers ON seccion.idtea = teachers.idtea INNER JOIN course ON seccion.idcur = course.idcur WHERE id = :id";
-            $stmt = $connect->prepare($sql);
-            $stmt->bindParam(':idsec', $idsec, PDO::PARAM_INT);
-            $stmt->execute();
-            $obj = $stmt->fetchObject();
+<?php 
 
-          ?>
+        if (isset($_POST['editar'])){
+        $id = $_POST['id'];
+        $sql= "SELECT * FROM notas WHERE id = :id"; 
+        $stmt = $connect->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT); 
+        $stmt->execute();
+        $obj = $stmt->fetchObject();
+        
+        ?>
 
-            <div class="col-12 col-md-12">
+            <div class="col-12 col-md-12"> 
 
-              <form role="form" method="POST" action="<?php echo $_SERVER['PHP_SELF'] ?>">
-                <input value="<?php echo $obj->idsec; ?>" name="idsec" type="hidden">
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="nombres">Sección</label>
+        <form role="form" method="POST" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+            <input value="<?php echo $obj->id;?>" name="id" type="hidden">
 
-                    <select required name="nomsec" class="form-control">
-                      <option value="<?php echo $obj->nomsec; ?>"><?php echo $obj->nomsec; ?></option>
-                      <option value="">
-                        <<>>
-                      </option>
-                      <option value="A">A</option>
-                      <option value="B">B</option>
-                      <option value="C">C</option>
-                      <option value="D">D</option>
-                      <option value="E">E</option>
-                    </select>
-
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="edad">Docente </label>
-                    <select required name="idtea" class="form-control">
-                      <option value="<?php echo $obj->idtea; ?>"><?php echo $obj->nomte; ?></option>
-                      <option value="">
-                        <<>>
-                      </option>
-
-                      <?php
-                      $stmt = $connect->prepare('SELECT * FROM teachers');
-                      $stmt->execute();
-
-                      while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        extract($row);
-                      ?>
-                        <option value="<?php echo $idtea; ?>"><?php echo $nomte; ?></option>
-                      <?php
-                      }
-                      ?>
-                      ?>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="nota1">Nota 1</label>
+              <input value="<?php echo $obj->nota1;?>" name="nota1" type="text" class="form-control" placeholder="Nota1">
+            </div>
 
 
-                    </select>
-                  </div>
-                </div>
+            <div class="form-group col-md-6">
+              <label for="nota2">Nota 2</label>
+              <input value="<?php echo $obj->nota2;?>" name="nota2" type="text" class="form-control" placeholder="Nota2">
+            </div>
 
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="nombres">Capacidad</label>
 
-                    <input maxlength="2" onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" value="<?php echo $obj->capa; ?>" name="capa" type="text" class="form-control">
+            <div class="form-group col-md-6">
+              <label for="nota3">Nota 3</label>
+              <input value="<?php echo $obj->nota3;?>" name="nota3" type="text" class="form-control" placeholder="Nota3">
+            </div>
 
-                  </div>
+            <div class="form-group col-md-6">
+              <label for="nota4">Nota 4</label>
+              <input value="<?php echo $obj->nota4;?>" name="nota4" type="text" class="form-control" placeholder="Nota4">
+            </div>
 
-                </div>
+
+            <div class="form-group col-md-6">
+              <label for="nota5">Nota 5</label>
+              <input value="<?php echo $obj->nota5;?>" name="nota5" type="text" class="form-control" placeholder="Nota5">
+            </div>
+            
+          
+            
+          </div>
 
                 <div class="form-group">
                   <button name="actualizar" type="submit" class="btn btn-primary  btn-block">Actualizar Registro</button>
                 </div>
-              </form>
-            </div>
-          <?php } ?>
+</form>
+    </div>  
+<?php }?>
 
           <!----------------------- REGISTRAR NUEVO ----------------------->
           <div id="addEmployeeModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myTitle" aria-hidden="true">
@@ -667,7 +649,7 @@ swal("¡Eliminado!", "Eliminado correctamente", "success").then(function() {
 
     ////////////// Actualizar la tabla /////////
     $consulta = "UPDATE notas
-SET `nota1`= :nota1, `nota2`= :nota2, `nota3`= :nota3, `nota4`= :nota4, `nota5`= :nota5 WHERE `id` = :id";
+    SET `nota1`= :nota1, `nota2`= :nota2, `nota3`= :nota3, `nota4`= :nota4, `nota5`= :nota5 WHERE `id` = :id";
     $sql = $connect->prepare($consulta);
     $sql->bindParam(':nota1', $nota1, PDO::PARAM_STR, 25);
     $sql->bindParam(':nota2', $nota1, PDO::PARAM_STR, 25);
