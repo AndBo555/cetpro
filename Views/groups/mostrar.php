@@ -298,7 +298,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
 
         if (isset($_POST['editar'])){
         $id = $_POST['id'];
-        $sql= "SELECT * FROM notas WHERE id = :id"; 
+        $sql= "SELECT * FROM notas WHERE id = :id";
         $stmt = $connect->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT); 
         $stmt->execute();
@@ -602,7 +602,6 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
       setTimeout(function() {
         $(".content").fadeOut(1500);
       }, 3000);
-
     });
   </script>
 
@@ -639,10 +638,10 @@ swal("¡Eliminado!", "Eliminado correctamente", "success").then(function() {
     ///////////// Informacion enviada por el formulario /////////////
     $id = trim($_POST['id']);
     $nota1 = trim($_POST['nota1']);
-    $nota1 = trim($_POST['nota2']);
-    $nota1 = trim($_POST['nota3']);
-    $nota1 = trim($_POST['nota4']);
-    $nota1 = trim($_POST['nota5']);
+    $nota2 = trim($_POST['nota2']);
+    $nota3 = trim($_POST['nota3']);
+    $nota4 = trim($_POST['nota4']);
+    $nota5 = trim($_POST['nota5']);
 
 
     ///////// Fin informacion enviada por el formulario /// 
@@ -652,10 +651,10 @@ swal("¡Eliminado!", "Eliminado correctamente", "success").then(function() {
     SET `nota1`= :nota1, `nota2`= :nota2, `nota3`= :nota3, `nota4`= :nota4, `nota5`= :nota5 WHERE `id` = :id";
     $sql = $connect->prepare($consulta);
     $sql->bindParam(':nota1', $nota1, PDO::PARAM_STR, 25);
-    $sql->bindParam(':nota2', $nota1, PDO::PARAM_STR, 25);
-    $sql->bindParam(':nota3', $nota1, PDO::PARAM_STR, 25);
-    $sql->bindParam(':nota4', $nota1, PDO::PARAM_STR, 25);
-    $sql->bindParam(':nota5', $nota1, PDO::PARAM_STR, 25);
+    $sql->bindParam(':nota2', $nota2, PDO::PARAM_STR, 25);
+    $sql->bindParam(':nota3', $nota3, PDO::PARAM_STR, 25);
+    $sql->bindParam(':nota4', $nota4, PDO::PARAM_STR, 25);
+    $sql->bindParam(':nota5', $nota5, PDO::PARAM_STR, 25);
     $sql->bindParam(':id', $id, PDO::PARAM_INT);
 
     $sql->execute();
